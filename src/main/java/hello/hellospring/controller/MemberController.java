@@ -20,6 +20,8 @@ public class MemberController {
     @Autowired
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
+        // memberController가 Proxy(가짜 memberService)를 호출함을 확인
+        //System.out.println("memberService = " + memberService.getClass());
     }
 
     // /members/new에 대한 GET 요청이 들어오면
@@ -37,7 +39,6 @@ public class MemberController {
         //System.out.println("member = "+ member.getName());
 
         return "redirect:/";    // 홈 화면으로
-
     }
     // /members 에 대한 GET 요청이 오면
     @GetMapping("/members")

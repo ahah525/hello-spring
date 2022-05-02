@@ -24,10 +24,19 @@ public class MemberService {
      * 회원 가입
      */
     public Long join(Member member) {
-        // 같은 이름의 회원은 중복 회원 가입X
-        validateDuplicateMember(member);    // 중복 회원 검증
-        memberRepository.save(member);  // 중복 회원 아니면 저장
-        return member.getId();  // 저장한 member id 반환
+
+        long start = System.currentTimeMillis();    // 회원가입 시작 시각
+
+        try {
+            validateDuplicateMember(member);    // 중복 회원 검증
+            memberRepository.save(member);  // 중복 회원 아니면 저장
+            return member.getId();  // 저장한 member id 반환
+        } finally {
+            // 회원 가입 로직이 끝날 때 시각
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;   // 회원 가입 호출 시간
+            System.out.println("join = " + timeMs + "ms");
+        }
     }
     // 파라미터로 들어온 member가 메모리에 이미 존재하는 회원인지 검증하는 함수
     private void validateDuplicateMember(Member member) {
@@ -42,7 +51,18 @@ public class MemberService {
      *  전체 회원 조회
      */
     public List<Member> findMembers() {
-        return memberRepository.findAll();
+        // 전체 회원 조회 시작 시각
+        long start = System.currentTimeMillis();
+
+        try {
+            return memberRepository.findAll();
+        } finally {
+            // 전체 회원 조회 로직 끝날 때 시각
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;   // 전체 회원 조회 호출 시간
+            System.out.println("findMembers = " + timeMs + "ms");
+        }
+
     }
     // 해당 id에 해당하는 회원 조회
     public Optional<Member> findOne(Long memberId) {
